@@ -83,16 +83,30 @@ class OrderController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(Request $request, order $order)
-    {
-        //
-    }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(order $order)
+    public function destroy($id)
     {
-        //
+        $DeleteOrder = order::destroy($id);
+
+        try {
+            if (!$DeleteOrder) {
+                return response()->json([
+                    "status" => false,
+                    "message" => "no delete Order"
+                ]);
+            } else {
+                return response()->json([
+                    "status" => true,
+                    "message" => "Success delete order"
+                ], 200);
+            }
+        } catch (\Throwable $th) {
+            return response()->json([
+                "message" => $th->getMessage()
+            ], 500);
+        }
     }
 }

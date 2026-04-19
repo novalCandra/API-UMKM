@@ -3,6 +3,7 @@
 use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BarangController;
 use App\Http\Controllers\CategoryController;
+use App\Http\Controllers\InventoryController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
@@ -56,12 +57,22 @@ Route::prefix('order')->group(function () {
     Route::middleware(['auth:sanctum', 'role:admin'])->group(function () {
         Route::get('/', [OrderController::class, "index"]);
         Route::get('/{id}', [OrderController::class, "show"]);
-        Route::post('/', [OrderController::class, "store"]);
-        Route::put('/{id}', [OrderController::class, "update"]);
         Route::delete('/{id}', [OrderController::class, "destory"]);
     });
 
     Route::middleware(['auth:sanctum', 'role:pembeli'])->group(function () {
         Route::post('/', [OrderController::class, "store"]);
+    });
+});
+
+
+
+Route::prefix('inventory')->group(function () {
+    Route::middleware(['auth:sanctum', 'role:admin'])->group(function () {
+        Route::get('/', [InventoryController::class, "index"]);
+        Route::get('/{id}', [InventoryController::class, "show"]);
+        Route::post('/', [InventoryController::class, "store"]);
+        Route::put('/{id}', [InventoryController::class, "update"]);
+        Route::delete('/{id}', [InventoryController::class, "destory"]);
     });
 });
