@@ -34,8 +34,8 @@ class InventoryController extends Controller
     public function store(Request $request)
     {
         $request->validate([
-            "total_barang" => "required|number",
-            "stok_barang" => "required|number"
+            "total_barang" => "required|numeric",
+            "stok_barang" => "required|numeric"
         ]);
 
         $CreateInventory = inventory::create([
@@ -52,7 +52,8 @@ class InventoryController extends Controller
             } else {
                 return response()->json([
                     "status" => true,
-                    "message" => "Success Create Inventory"
+                    "message" => "Success Create Inventory",
+                    "data" => $CreateInventory
                 ], 200);
             }
         } catch (\Throwable $th) {
@@ -103,8 +104,8 @@ class InventoryController extends Controller
     public function update(Request $request, $id)
     {
         $request->validate([
-            "total_barang" => "required|number",
-            "stok_barang" => "required|number"
+            "total_barang" => "required|numeric",
+            "stok_barang" => "required|numeric"
         ]);
 
         $UpdateInventory = inventory::findOrFail($id);
@@ -121,7 +122,8 @@ class InventoryController extends Controller
             } else {
                 return response()->json([
                     "status" => true,
-                    "message" => "Success Update order"
+                    "message" => "Success Update order",
+                    "data" => $UpdateInventory
                 ], 200);
             }
         } catch (\Throwable $th) {

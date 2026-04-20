@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\order_barang;
+use App\Models\OrderBarang;
 use Illuminate\Http\Request;
 
 class OrderBarangController extends Controller
@@ -28,38 +29,34 @@ class OrderBarangController extends Controller
      */
     public function store(Request $request)
     {
-        //
-    }
+        $request->validate([
+            "id_order" => "required|exists:orders,id",
+            "id_barang" => "required|exists:barangs,id"
+        ]);
 
-    /**
-     * Display the specified resource.
-     */
-    public function show(order_barang $order_barang)
-    {
-        //
-    }
-
-    /**
-     * Show the form for editing the specified resource.
-     */
-    public function edit(order_barang $order_barang)
-    {
-        //
-    }
-
-    /**
-     * Update the specified resource in storage.
-     */
-    public function update(Request $request, order_barang $order_barang)
-    {
-        //
-    }
-
-    /**
-     * Remove the specified resource from storage.
-     */
-    public function destroy(order_barang $order_barang)
-    {
-        //
+        $CreataeOrderBarang = OrderBarang::create([
+            "id_order" => $request->id_order,
+            "id_barang" => $request->id_barang,
+            "status" => 'running'
+        ]);
+        try {
+            if (!$CreataeOrderBarang) {
+                return response()->json([
+                    "status" => false,
+                    "message" => "not create Order"
+                ], 403);
+            } else {
+                return response()->json([
+                    "status" => true,
+                    "message" => "success Create Order barang",
+                    "data" => $CreataeOrderBarang
+                ], 200);
+            }
+        } catch (\Throwable $th) {
+            return response()->json([
+                "status" => false,
+                "message" => $th->getMessage()
+            ]);
+        }
     }
 }

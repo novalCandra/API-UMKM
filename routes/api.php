@@ -4,6 +4,7 @@ use App\Http\Controllers\AuthController;
 use App\Http\Controllers\BarangController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\InventoryController;
+use App\Http\Controllers\OrderBarangController;
 use App\Http\Controllers\OrderController;
 use App\Http\Controllers\UserController;
 use Illuminate\Http\Request;
@@ -37,7 +38,7 @@ Route::prefix('categories')->group(function () {
         Route::get('/{id}', [CategoryController::class, "show"]);
         Route::post('/', [CategoryController::class, "store"]);
         Route::put('/{id}', [CategoryController::class, "update"]);
-        Route::delete('/{id}', [CategoryController::class, "destory"]);
+        Route::delete('/{id}', [CategoryController::class, "destroy"]);
     });
 });
 
@@ -45,13 +46,12 @@ Route::prefix('categories')->group(function () {
 Route::prefix('barang')->group(function () {
     Route::middleware(['auth:sanctum', 'role:admin'])->group(function () {
         Route::get('/', [BarangController::class, "index"]);
-        Route::get('/{id}', [BarangController::class, "show"]);
         Route::post('/', [BarangController::class, "store"]);
+        Route::get('/{id}', [BarangController::class, "show"]);
         Route::put('/{id}', [BarangController::class, "update"]);
-        Route::delete('/{id}', [BarangController::class, "destory"]);
+        Route::delete('/{id}', [BarangController::class, "destroy"]);
     });
 });
-
 
 Route::prefix('order')->group(function () {
     Route::middleware(['auth:sanctum', 'role:admin'])->group(function () {
@@ -61,7 +61,7 @@ Route::prefix('order')->group(function () {
     });
 
     Route::middleware(['auth:sanctum', 'role:pembeli'])->group(function () {
-        Route::post('/', [OrderController::class, "store"]);
+        Route::post('/', [OrderBarangController::class, "store"]);
     });
 });
 
@@ -71,6 +71,6 @@ Route::prefix('inventory')->group(function () {
         Route::get('/{id}', [InventoryController::class, "show"]);
         Route::post('/', [InventoryController::class, "store"]);
         Route::put('/{id}', [InventoryController::class, "update"]);
-        Route::delete('/{id}', [InventoryController::class, "destory"]);
+        Route::delete('/{id}', [InventoryController::class, "destroy"]);
     });
 });

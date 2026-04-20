@@ -3,6 +3,8 @@
 namespace App\Http\Controllers;
 
 use App\Models\order;
+use App\Models\order_barang;
+use App\Models\OrderBarang;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -13,7 +15,12 @@ class OrderController extends Controller
      */
     public function index()
     {
-        //
+        $AllOrder = OrderBarang::with(['orders', 'barang'])->get();
+        return response()->json([
+            "status" => true,
+            "message" => "success All Order",
+            "data" => $AllOrder
+        ], 200);
     }
 
     /**

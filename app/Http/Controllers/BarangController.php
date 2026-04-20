@@ -35,29 +35,24 @@ class BarangController extends Controller
      */
     public function store(Request $request)
     {
-
         DB::beginTransaction();
         try {
             $request->validate([
                 "id_inventory" => "required|exists:inventories,id",
                 "id_category" => "required|exists:categories,id",
                 "nama_barang" => "required|string",
-                "harga_barang" => "required|number",
-                "decription" => "nullable|string",
+                "harga_barang" => "required|numeric",
                 "image" => "required|image|mimes:jpeg,jpg,png"
             ]);
-
-            $imagePath = $request->file('image')->assert('public', 'image');
+            $imagePath = $request->file('image')->store('image', 'public');
             $CreateImage = barang::create([
                 "id_inventory" => $request->id_inventory,
                 "id_category" => $request->id_category,
                 "nama_barang" => $request->nama_barang,
                 "harga_barang" => $request->harga_barang,
-                "decription" => $request->decription,
                 "image" => $imagePath,
                 "image_url" => asset('storage/' . $imagePath)
             ]);
-
             DB::commit();
             return response()->json([
                 "status" => true,
@@ -66,6 +61,10 @@ class BarangController extends Controller
             ], 200);
         } catch (\Throwable $th) {
             DB::rollBack();
+            return response()->json([
+                "status" => false,
+                "message" => $th->getMessage()
+            ], 500);
         }
     }
 
@@ -110,24 +109,22 @@ class BarangController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $UpdateBarang = barang::firstOrFail($id);
+        $UpdateBarang = barang::findOrFail($id);
 
         $request->validate([
             "id_inventory" => "required|exists:inventories,id",
             "id_category" => "required|exists:categories,id",
             "nama_barang" => "required|string",
-            "harga_barang" => "required|number",
-            "decription" => "nullable|string",
+            "harga_barang" => "required|numeric",
             "image" => "required|image|mimes:jpeg,jpg,png"
         ]);
 
-        $imagePath = $request->file('image')->assert('public', 'image');
+        $imagePath = $request->file('image')->store('image', 'public');
         $UpdateBarang->update([
             "id_inventory" => $request->id_inventory,
             "id_category" => $request->id_category,
             "nama_barang" => $request->nama_barang,
             "harga_barang" => $request->harga_barang,
-            "decription" => $request->decription,
             "image" => $imagePath,
             "image_url" => asset('storage/' . $imagePath)
         ]);
