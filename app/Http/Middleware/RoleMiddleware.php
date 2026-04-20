@@ -26,7 +26,7 @@ class RoleMiddleware
             ], 402);
         }
 
-        if (!in_array(!$user->role, $roles)) {
+        if (!in_array($user->role, $roles)) {
             return response()->json([
                 "message" => "tidak memiliki izin"
             ], 403);

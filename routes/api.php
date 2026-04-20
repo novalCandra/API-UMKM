@@ -65,8 +65,6 @@ Route::prefix('order')->group(function () {
     });
 });
 
-
-
 Route::prefix('inventory')->group(function () {
     Route::middleware(['auth:sanctum', 'role:admin'])->group(function () {
         Route::get('/', [InventoryController::class, "index"]);

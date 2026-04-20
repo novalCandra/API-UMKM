@@ -31,7 +31,7 @@ class AuthController extends Controller
         return response()->json([
             "status" => true,
             "message" => "succes Login",
-            "status" => $user
+            "data" => $user
         ], 200);
     }
 
@@ -39,7 +39,7 @@ class AuthController extends Controller
     {
         $request->user()->tokens()->delete();
         return response()->json([
-            "status" => false,
+            "status" => true,
             "message" => "succcess Logout"
         ]);
     }

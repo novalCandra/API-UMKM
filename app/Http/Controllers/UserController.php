@@ -33,13 +33,13 @@ class UserController extends Controller
     {
         $request->validate([
             "email" => "required|string",
-            "nama" => "required|string",
+            "name" => "required|string",
             "password" => "required|string",
         ]);
 
         $CreateAccunt = User::create([
             "email" => $request->email,
-            "nama" => $request->nama,
+            "name" => $request->name,
             "password" => bcrypt($request->password)
         ]);
 
@@ -69,13 +69,13 @@ class UserController extends Controller
         $userUpdate = User::findOrFail($id);
         $request->validate([
             "email" => "required|string",
-            "nama" => "required|string",
+            "name" => "required|string",
             "password" => "required|string",
         ]);
 
         $userUpdate->update([
             "email" => $request->email,
-            "nama" => $request->nama,
+            "name" => $request->name,
             "password" => bcrypt($request->password)
         ]);
 
